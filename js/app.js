@@ -1,11 +1,20 @@
 'use strict';
 
+//global variables
+var imageOne = document.getElementById('image-one');
+var imageTwo = document.getElementById('image-two');
+var imageThree = document.getElementById('image-three');
+var allProducts = [];
+var productsShown = [];
+
 //constructor function
 function ProductInstances(productName, filepath) {
   this.productName = productName,
   this.filepath = filepath,
-  this.numberOfTimesShown = [];
-  this.numberOfTimesClicked = [];
+  this.numberOfTimesShown = [],
+  this.numberOfTimesClicked = 0,
+
+  allProducts.push(this);
 }
 
 // render the object instances
@@ -23,31 +32,83 @@ new ProductInstances("Pen Utensils", "img/pen.jpg");
 new ProductInstances("Pet Friendly Sweeper", "img/pet-sweep.jpg");
 new ProductInstances("Pizza Scissors", "img/scissors.jpg");
 new ProductInstances("Shark Sleeping Bag", "img/shark.jpg");
-new ProductInstances("Baby Sweaper", "img/sweep.jpg");
+new ProductInstances("Baby Sweeper", "img/sweep.png");
 new ProductInstances("Tauntaun Sleeping Bag", "img/tauntaun.jpg");
 new ProductInstances("Unicorn Meat", "img/unicorn.jpg");
 new ProductInstances("Tenticle USB", "img/usb.gif");
 new ProductInstances("Self Watering Water Can", "img/water-can.jpg");
 new ProductInstances("Impossible Wine Glass", "img/wine-glass.jpg");
 
-//event listener
-  //listening for click
+function randomImageGenerator () {
 
-  //once clicked run the function:
-    //generates three new non-duplicate images
-      //grabs img position in the DOM using IDs
-      //random number * length of array generates random index number for each image position
-      //push random index numbers into an array
-      //if statement for first image: new index matches previous 3 numbers in array, choose another one 
+  //counts how many clicks each item gets
+  if (event) {
+    for (var i = 0; i < allProducts.length; i++)
+      if (event.target.alt === allProducts[i].productName) {
+        allProducts[i].numberOfTimesClicked++;
+        console.log(allProducts[i].numberOfTimesClicked);
+      }
+  }
 
-      //if statement for second image: new index matches previous 4 numbers in array, choose another one 
+  //image #1
+  var randomNumber = Math.floor(Math.random() * allProducts.length);
 
-      //if statement for third image: new index matches previous 5 numbers in array, choose another one 
+  while (randomNumber === productsShown[productsShown.length - 1] || randomNumber === productsShown[productsShown.length - 2] || randomNumber === productsShown[productsShown.length - 3]) {
 
-      //put image path in the ID image
-      //put image name in alt
+    randomNumber = Math.floor(Math.random() * allProducts.length);
 
-    //tracks which image got the click -- push index number to an array
+  }
+
+  productsShown.push(randomNumber);
+
+  imageOne.src = allProducts[randomNumber].filepath;
+  imageOne.alt = allProducts[randomNumber].productName;
+
+  //image #2
+  randomNumber = Math.floor(Math.random() * allProducts.length);
+
+  while (randomNumber === productsShown[productsShown.length - 1] || randomNumber === productsShown[productsShown.length - 2] || randomNumber === productsShown[productsShown.length - 3] || randomNumber === productsShown[productsShown.length - 4]) {
+
+    randomNumber = Math.floor(Math.random() * allProducts.length);
+
+  }
+
+  productsShown.push(randomNumber);
+
+  imageTwo.src = allProducts[randomNumber].filepath;
+  imageTwo.alt = allProducts[randomNumber].productName;
+
+  //image #3
+  randomNumber = Math.floor(Math.random() * allProducts.length);
+
+  while (randomNumber === productsShown[productsShown.length - 1] || randomNumber === productsShown[productsShown.length - 2] || randomNumber === productsShown[productsShown.length - 3] || randomNumber === productsShown[productsShown.length - 4] || randomNumber === productsShown[productsShown.length - 5]) {
+
+    randomNumber = Math.floor(Math.random() * allProducts.length);
+
+  }
+
+  productsShown.push(randomNumber);
+  imageThree.src = allProducts[randomNumber].filepath;
+  imageThree.alt = allProducts[randomNumber].productName;
+
+  console.log(productsShown);
+}
+
+if (productsShown.length > 75) {
+  var resultsSection = document.getElementById('results-hidden');
+  resultsSection.id = "results-show";
+  imageOne.className = "hidden";
+  imageTwo.className = "hidden";
+  imageThree.className = "hidden";
+}
+
+imageOne.addEventListener('click', randomImageGenerator);
+imageTwo.addEventListener('click', randomImageGenerator);
+imageThree.addEventListener('click', randomImageGenerator);
+
+randomImageGenerator();
+
+
 
 // at end, run a for loop through the array that displayed the images and add the index numbers together
 
