@@ -1,0 +1,7 @@
+#products {
+  display: inline-block;
+}
+
+#products img {
+  boarder: 2px solid  gray;
+}
