@@ -92,7 +92,9 @@ li {
 }
 
 #results-show {
-
+  position: relative; 
+  height:40vh; 
+  width:80vw;
 }
 
 .hidden {

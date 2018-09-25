@@ -7,6 +7,10 @@ var imageThree = document.getElementById('image-three');
 var allProducts = [];
 var productsShown = [];
 var maxClickedAllowed = 25;
+var namesArray = [];
+var votesArray = [];
+var timesShownArray = [];
+var percentagesArray = [];
 
 //constructor function
 function ProductInstances(productName, filepath, numberOfTimesShown=0, numberOfTimesClicked=0) {
@@ -49,34 +53,28 @@ function setUpEventListener () {
   imageThree.addEventListener('click', randomImageGenerator);
 }
 
-// function removeEventListeners () {
-//   imageOne.removeEventListeners('click');
-//   imageTwo.removeEventListeners('click');
-//   imageThree.removeEventListeners('click');
-// }
+function removeEventListeners () {
+  imageOne.removeEventListener('click', randomImageGenerator);
+  imageTwo.removeEventListener('click', randomImageGenerator);
+  imageThree.removeEventListener('click', randomImageGenerator);
+}
+
+
+function transition() {
+  removeEventListeners();
+
+  var resultsSection = document.getElementById('results-hidden');
+  resultsSection.id = 'results-show';
+  var intro = document.getElementById('intro');
+  intro.className = 'hidden';
+}
 
 function randomImageGenerator () {
 
   //generaes the final account form
   if (maxClickedAllowed === 0) {
-    //removeEventListeners();
-
-    var resultsSection = document.getElementById('results-hidden');
-    resultsSection.id = 'results-show';
-    imageOne.className = 'hidden';
-    imageTwo.className = 'hidden';
-    imageThree.className = 'hidden';
-    var intro = document.getElementById('intro');
-    intro.className = 'hidden';
-  
-    for (var i = 0; i < allProducts.length; i++) {
-      var resultsShow = document.getElementsByTagName('ul')[0];
-      var responses = document.createElement('li');
-      
-      responses.textContent = allProducts[i].productName + ' was viewed ' + allProducts[i].numberOfTimesShown + ' times and had ' + allProducts[i].numberOfTimesClicked + ' votes.';
-      
-      resultsShow.appendChild(responses);
-    }
+    chartArrayGenerator();
+    transition();
   }
 
   //counts how many clicks each item gets
@@ -85,7 +83,6 @@ function randomImageGenerator () {
       if (event.target.alt === allProducts[j].productName) {
         allProducts[j].numberOfTimesClicked++;
         maxClickedAllowed--;
-        console.log(allProducts[j].numberOfTimesClicked);
       }
     }
   }
@@ -151,17 +148,83 @@ function randomImageGenerator () {
   }
 }
 
-if (productsShown.length > 75) {
-  var resultsSection = document.getElementById('results-hidden');
-  resultsSection.id = 'results-show';
-  imageOne.className = 'hidden';
-  imageTwo.className = 'hidden';
-  imageThree.className = 'hidden';
+function chartArrayGenerator() {
 
-  for (var i = 0; i < allProducts.length; i++) {
-    resultsSection.innerHTML(this.responses[i]);
+  for (var i = 0; i < allProducts.length; i++){
+    namesArray.push(allProducts[i].productName);
+    votesArray.push(allProducts[i].numberOfTimesClicked);
+    timesShownArray.push(allProducts[i].numberOfTimesShown);
+    percentagesArray.push((allProducts[i].numberOfTimesClicked/allProducts[i].numberOfTimesShown)*100);
   }
 }
+
+var ctx = document.getElementById("myChart").getContext('2d');
+
+var myChart = new Chart(ctx, {
+  type: 'horizontalBar',
+  data: {
+    labels: namesArray,
+    datasets: [{
+      label: '% of votes',
+      data: percentagesArray,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero:true
+        }
+      }]
+    }
+  }
+});
 
 
 initalizeDatabase();
