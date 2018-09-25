@@ -27,7 +27,7 @@ main {
   background-color: #edeef0;
   border: 2px solid gray;
   margin: auto;
-  min-height: 1000px;
+  min-height: 1417px;
   width: 1000px;
 }
 
@@ -45,7 +45,8 @@ h2 {
   font-weight:bold;
   font-size: 2em;
   font-family: 'Satisfy', cursive;
-  padding: 15px;
+  padding: 25px;
+  text-align: center;
 }
 
 h3 {
