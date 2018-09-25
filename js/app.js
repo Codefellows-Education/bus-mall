@@ -9,10 +9,10 @@ var productsShown = [];
 
 //constructor function
 function ProductInstances(productName, filepath) {
-  this.productName = productName,
-  this.filepath = filepath,
-  this.numberOfTimesShown = [],
-  this.numberOfTimesClicked = 0,
+  this.productName = productName;
+  this.filepath = filepath;
+  this.numberOfTimesShown = 0;
+  this.numberOfTimesClicked = 0;
 
   allProducts.push(this);
 }
@@ -41,13 +41,34 @@ new ProductInstances("Impossible Wine Glass", "img/wine-glass.jpg");
 
 function randomImageGenerator () {
 
+  //generaes the final account form
+  if (productsShown.length >= 75) {
+    var resultsSection = document.getElementById('results-hidden');
+    resultsSection.id = 'results-show';
+    imageOne.className = 'hidden';
+    imageTwo.className = 'hidden';
+    imageThree.className = 'hidden';
+    var intro = document.getElementById('intro');
+    intro.className = 'hidden';
+  
+    for (var i = 0; i < allProducts.length; i++) {
+      var resultsShow = document.getElementsByTagName('ul')[0];
+      var responses = document.createElement('li');
+      
+      responses.textContent = allProducts[i].productName + ' was viewed ' + allProducts[i].numberOfTimesShown + ' times and had ' + allProducts[i].numberOfTimesClicked + ' votes.';
+      
+      resultsShow.appendChild(responses);
+    }
+  }
+
   //counts how many clicks each item gets
   if (event) {
-    for (var i = 0; i < allProducts.length; i++)
-      if (event.target.alt === allProducts[i].productName) {
-        allProducts[i].numberOfTimesClicked++;
-        console.log(allProducts[i].numberOfTimesClicked);
+    for (var j = 0; j < allProducts.length; j++){
+      if (event.target.alt === allProducts[j].productName) {
+        allProducts[j].numberOfTimesClicked++;
+        console.log(allProducts[j].numberOfTimesClicked);
       }
+    }
   }
 
   //image #1
@@ -64,6 +85,13 @@ function randomImageGenerator () {
   imageOne.src = allProducts[randomNumber].filepath;
   imageOne.alt = allProducts[randomNumber].productName;
 
+  //counts how many times a product is shown
+  for (var k = 0; k < allProducts.length; k++){
+    if (k === randomNumber) {
+      allProducts[k].numberOfTimesShown++;
+    }
+  }
+
   //image #2
   randomNumber = Math.floor(Math.random() * allProducts.length);
 
@@ -78,6 +106,12 @@ function randomImageGenerator () {
   imageTwo.src = allProducts[randomNumber].filepath;
   imageTwo.alt = allProducts[randomNumber].productName;
 
+  for (k = 0; k < allProducts.length; k++){
+    if (k === randomNumber) {
+      allProducts[k].numberOfTimesShown++;
+    }
+  }
+
   //image #3
   randomNumber = Math.floor(Math.random() * allProducts.length);
 
@@ -91,15 +125,23 @@ function randomImageGenerator () {
   imageThree.src = allProducts[randomNumber].filepath;
   imageThree.alt = allProducts[randomNumber].productName;
 
-  console.log(productsShown);
+  for (k = 0; k < allProducts.length; k++){
+    if (k === randomNumber) {
+      allProducts[k].numberOfTimesShown++;
+    }
+  }
 }
 
 if (productsShown.length > 75) {
   var resultsSection = document.getElementById('results-hidden');
-  resultsSection.id = "results-show";
-  imageOne.className = "hidden";
-  imageTwo.className = "hidden";
-  imageThree.className = "hidden";
+  resultsSection.id = 'results-show';
+  imageOne.className = 'hidden';
+  imageTwo.className = 'hidden';
+  imageThree.className = 'hidden';
+
+  for (var i = 0; i < allProducts.length; i++) {
+    resultsSection.innerHTML(this.responses[i]);
+  }
 }
 
 imageOne.addEventListener('click', randomImageGenerator);
@@ -107,15 +149,3 @@ imageTwo.addEventListener('click', randomImageGenerator);
 imageThree.addEventListener('click', randomImageGenerator);
 
 randomImageGenerator();
-
-
-
-// at end, run a for loop through the array that displayed the images and add the index numbers together
-
-// at end run a for loop through the click array and add the same index numbers together
-
-// turn off event listener after 25 clicks and display list of products with text: "(Click Array) votes for (product name)"
-
-//calculate percentate of time: number of times image was clicked on/number of time image appeard * 100
-
-// create a table that displays: "(name of product) appeared (number of time appeared) times and was clicked on (number of times item was clicked) times. This is (percentage of times it was clicked)% of the time."
