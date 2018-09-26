@@ -5,7 +5,7 @@ var imageOne = document.getElementById('image-one');
 var imageTwo = document.getElementById('image-two');
 var imageThree = document.getElementById('image-three');
 var allProducts = [];
-var productsShown = [];
+var recentlyShown = []; // rolling window of the 5 most recent indexes
 var maxClickedAllowed = 25;
 var namesArray = [];
 var votesArray = [];
@@ -48,17 +48,16 @@ function initalizeDatabase() {
 
 //event listeners
 function setUpEventListener () {
-  imageOne.addEventListener('click', randomImageGenerator);
-  imageTwo.addEventListener('click', randomImageGenerator);
-  imageThree.addEventListener('click', randomImageGenerator);
+  imageOne.addEventListener('click', renderAllFunctions);
+  imageTwo.addEventListener('click', renderAllFunctions);
+  imageThree.addEventListener('click', renderAllFunctions);
 }
 
 function removeEventListeners () {
-  imageOne.removeEventListener('click', randomImageGenerator);
-  imageTwo.removeEventListener('click', randomImageGenerator);
-  imageThree.removeEventListener('click', randomImageGenerator);
+  imageOne.removeEventListener('click', renderAllFunctions);
+  imageTwo.removeEventListener('click', renderAllFunctions);
+  imageThree.removeEventListener('click', renderAllFunctions);
 }
-
 
 function transition() {
   removeEventListeners();
@@ -69,7 +68,35 @@ function transition() {
   intro.className = 'hidden';
 }
 
-function randomImageGenerator () {
+function renderImage(imageElement){
+  var randomNumber = Math.floor(Math.random() * allProducts.length);
+
+  while (
+    recentlyShown.includes(randomNumber)
+  ) {
+    randomNumber = Math.floor(Math.random() * allProducts.length);
+  }
+
+  // add the random number to the most recent five products Shown
+  recentlyShown.push(randomNumber);
+
+  // ensure the products shown only keeps the last five indexes
+  if(recentlyShown.length > 5) {
+    recentlyShown.shift();
+  }
+
+  imageElement.src = allProducts[randomNumber].filepath;
+  imageElement.alt = allProducts[randomNumber].productName;
+  imageElement.productIndex = randomNumber;
+
+  for (var i = 0; i < allProducts.length; i++){
+    if (i === randomNumber) {
+      allProducts[i].numberOfTimesShown++;
+    }
+  }
+}
+
+function renderAllFunctions() {
 
   //generaes the final account form
   if (maxClickedAllowed === 0) {
@@ -79,73 +106,13 @@ function randomImageGenerator () {
 
   //counts how many clicks each item gets
   if (event) {
-    for (var j = 0; j < allProducts.length; j++){
-      if (event.target.alt === allProducts[j].productName) {
-        allProducts[j].numberOfTimesClicked++;
-        maxClickedAllowed--;
-      }
-    }
+    allProducts[event.target.productIndex].numberOfTimesClicked++;
+    maxClickedAllowed--;
   }
 
-  //image #1
-  var randomNumber = Math.floor(Math.random() * allProducts.length);
-
-  while (randomNumber === productsShown[productsShown.length - 1] || randomNumber === productsShown[productsShown.length - 2] || randomNumber === productsShown[productsShown.length - 3]) {
-
-    randomNumber = Math.floor(Math.random() * allProducts.length);
-
-  }
-
-  productsShown.push(randomNumber);
-
-  imageOne.src = allProducts[randomNumber].filepath;
-  imageOne.alt = allProducts[randomNumber].productName;
-
-  //counts how many times a product is shown
-  for (var k = 0; k < allProducts.length; k++){
-    if (k === randomNumber) {
-      allProducts[k].numberOfTimesShown++;
-    }
-  }
-
-  //image #2
-  randomNumber = Math.floor(Math.random() * allProducts.length);
-
-  while (randomNumber === productsShown[productsShown.length - 1] || randomNumber === productsShown[productsShown.length - 2] || randomNumber === productsShown[productsShown.length - 3] || randomNumber === productsShown[productsShown.length - 4]) {
-
-    randomNumber = Math.floor(Math.random() * allProducts.length);
-
-  }
-
-  productsShown.push(randomNumber);
-
-  imageTwo.src = allProducts[randomNumber].filepath;
-  imageTwo.alt = allProducts[randomNumber].productName;
-
-  for (k = 0; k < allProducts.length; k++){
-    if (k === randomNumber) {
-      allProducts[k].numberOfTimesShown++;
-    }
-  }
-
-  //image #3
-  randomNumber = Math.floor(Math.random() * allProducts.length);
-
-  while (randomNumber === productsShown[productsShown.length - 1] || randomNumber === productsShown[productsShown.length - 2] || randomNumber === productsShown[productsShown.length - 3] || randomNumber === productsShown[productsShown.length - 4] || randomNumber === productsShown[productsShown.length - 5]) {
-
-    randomNumber = Math.floor(Math.random() * allProducts.length);
-
-  }
-
-  productsShown.push(randomNumber);
-  imageThree.src = allProducts[randomNumber].filepath;
-  imageThree.alt = allProducts[randomNumber].productName;
-
-  for (k = 0; k < allProducts.length; k++){
-    if (k === randomNumber) {
-      allProducts[k].numberOfTimesShown++;
-    }
-  }
+  renderImage(imageOne);
+  renderImage(imageTwo);
+  renderImage(imageThree);
 }
 
 function chartArrayGenerator() {
@@ -229,5 +196,5 @@ var myChart = new Chart(ctx, {
 
 initalizeDatabase();
 setUpEventListener();
-randomImageGenerator();
+renderAllFunctions();
 

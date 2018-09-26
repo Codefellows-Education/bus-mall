@@ -27,8 +27,9 @@ main {
   background-color: #edeef0;
   border: 2px solid gray;
   margin: auto;
-  min-height: 1417px;
+  min-height: 2000px;
   width: 1000px;
+  
 }
 
 h1 {
@@ -100,8 +101,4 @@ li {
 
 .hidden {
   display:none;
-}
-
-li {
-
 }
