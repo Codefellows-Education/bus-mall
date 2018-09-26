@@ -78,6 +78,23 @@ li {
   padding:10px;
 }
 
+button {
+  background-color: #1d2d2f;
+  border: 2px solid #1d2d2f;
+  color: #eee;
+  height: 45px;
+  text-align: center;
+  transition-property: background-color, color;
+  transition-duration: .2s;
+  transition-timing-function: linear;
+  width: 100px;
+}
+
+button:hover {
+  background-color: #c1d8d7;
+  color: #1d2d2f;
+}
+
 #products {
   display: inline-block;
   margin:auto;
@@ -95,8 +112,9 @@ li {
 
 #results-show {
   position: relative; 
-  height:40vh; 
-  width:80vw;
+  height:40vh;
+  margin:auto; 
+  width:60vw;
 }
 
 .hidden {

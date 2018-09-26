@@ -4,6 +4,7 @@
 var imageOne = document.getElementById('image-one');
 var imageTwo = document.getElementById('image-two');
 var imageThree = document.getElementById('image-three');
+var productElement = document.getElementById('products');
 var allProducts = [];
 var recentlyShown = []; // rolling window of the 5 most recent indexes
 var maxClickedAllowed = 25;
@@ -20,6 +21,21 @@ function ProductInstances(productName, filepath, numberOfTimesShown=0, numberOfT
   this.numberOfTimesClicked = numberOfTimesClicked;
 
   allProducts.push(this);
+}
+
+//get the image Objects
+function getTheImageObjects () {
+  var productInStorage = localStorage.getItem('product');
+
+  if(productInStorage){
+
+    allProducts = JSON.parse(productInStorage);
+
+  } else {
+
+    initalizeDatabase();
+    localStorage.setItem('product', JSON.stringify(allProducts));
+  }
 }
 
 // render the object instances
@@ -46,17 +62,13 @@ function initalizeDatabase() {
   new ProductInstances("Impossible Wine Glass", "img/wine-glass.jpg");
 }
 
-//event listeners
+//event listener on parent element for images
 function setUpEventListener () {
-  imageOne.addEventListener('click', renderAllFunctions);
-  imageTwo.addEventListener('click', renderAllFunctions);
-  imageThree.addEventListener('click', renderAllFunctions);
+  productElement.addEventListener('click', renderAllFunctions);
 }
 
 function removeEventListeners () {
-  imageOne.removeEventListener('click', renderAllFunctions);
-  imageTwo.removeEventListener('click', renderAllFunctions);
-  imageThree.removeEventListener('click', renderAllFunctions);
+  productElement.removeEventListener('click', renderAllFunctions);
 }
 
 function transition() {
@@ -88,14 +100,12 @@ function renderImage(imageElement){
   imageElement.src = allProducts[randomNumber].filepath;
   imageElement.alt = allProducts[randomNumber].productName;
   imageElement.productIndex = randomNumber;
+  allProducts[randomNumber].numberOfTimesShown++;
 
-  for (var i = 0; i < allProducts.length; i++){
-    if (i === randomNumber) {
-      allProducts[i].numberOfTimesShown++;
-    }
-  }
+  localStorage.setItem('product', JSON.stringify(allProducts));
 }
 
+//event handler
 function renderAllFunctions() {
 
   //generaes the final account form
@@ -194,7 +204,7 @@ var myChart = new Chart(ctx, {
 });
 
 
-initalizeDatabase();
+getTheImageObjects ();
 setUpEventListener();
 renderAllFunctions();
 
