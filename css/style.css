@@ -27,7 +27,7 @@ main {
   background-color: #edeef0;
   border: 2px solid gray;
   margin: auto;
-  min-height: 2000px;
+  min-height: 1500px;
   width: 1000px;
   
 }
@@ -78,6 +78,22 @@ li {
   padding:10px;
 }
 
+button {
+  background-color: #1d2d2f;
+  border: 2px solid #1d2d2f;
+  color: #eee;
+  height: 45px;
+  transition-property: background-color, color;
+  transition-duration: .2s;
+  transition-timing-function: linear;
+  width: 100px;
+}
+
+button:hover {
+  background-color: #c1d8d7;
+  color: #1d2d2f;
+}
+
 #products {
   display: inline-block;
   margin:auto;
@@ -94,9 +110,9 @@ li {
 }
 
 #results-show {
-  position: relative; 
-  height:40vh; 
-  width:80vw;
+  position: relative;
+  margin:auto; 
+  width:60vw;
 }
 
 .hidden {
