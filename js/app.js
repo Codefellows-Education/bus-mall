@@ -5,6 +5,7 @@ var imageOne = document.getElementById('image-one');
 var imageTwo = document.getElementById('image-two');
 var imageThree = document.getElementById('image-three');
 var productElement = document.getElementById('products');
+var button = document.getElementsByTagName('button')[0];
 var allProducts = [];
 var recentlyShown = []; // rolling window of the 5 most recent indexes
 var maxClickedAllowed = 25;
@@ -65,6 +66,12 @@ function initalizeDatabase() {
 //event listener on parent element for images
 function setUpEventListener () {
   productElement.addEventListener('click', renderAllFunctions);
+  button.addEventListener('click', clear);
+}
+
+function clear(){
+  localStorage.clear();
+  location.reload();
 }
 
 function removeEventListeners () {
