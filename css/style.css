@@ -3,7 +3,7 @@ header {
   border: 2px solid gray;
   color: #fff;
   margin:auto;
-  width: 1000px;
+  width: 90%;
 }
 
 header p {
@@ -28,8 +28,7 @@ main {
   border: 2px solid gray;
   margin: auto;
   min-height: 1500px;
-  width: 1000px;
-  
+  width: 90%;
 }
 
 h1 {
@@ -58,6 +57,8 @@ h3 {
 }
 
 img {
+  transition: transform 1s;
+  transform-style: preserve-3d;
   width: 300px;
   height: 300px;
 }
